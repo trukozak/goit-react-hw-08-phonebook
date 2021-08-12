@@ -11,71 +11,34 @@ import {
   fetchContactsSuccess,
 } from './contactsAction';
 
-axios.defaults.baseURL = 'https://shopreact-296b9-default-rtdb.firebaseio.com/';
-export const fetchContactsOperations = () => async dispatch => {
+export const fetchContactsOperations = () => async (dispatch, getState) => {
   dispatch(fetchContactsRequest());
   try {
-    const { data } = await axios.get('/contacts.json');
-    if (data)
-      dispatch(
-        fetchContactsSuccess(
-          Object.keys(data).map(key => ({
-            id: key,
-            ...data[key],
-          })),
-        ),
-      );
+    const { data } = await axios.get('/contacts', {
+      headers: { Authorization: `Bearer ${getState().auth.idToken}` },
+    });
+    dispatch(fetchContactsSuccess(data));
   } catch (error) {
-    dispatch(fetchContactsError(error));
+    dispatch(fetchContactsError(error.message));
   }
 };
+
 export const addContactOperations = contact => async dispatch => {
   dispatch(addContactRequest());
   try {
-    const { data } = await axios.post('/contacts.json', contact);
-    dispatch(addContactSuccess({ id: data.name, ...contact }));
+    const { data } = await axios.post('/contacts', contact);
+    dispatch(addContactSuccess(data));
   } catch (error) {
-    dispatch(addContactError(error));
+    dispatch(addContactError(error.message));
   }
 };
 
 export const deleteContactOperation = id => async dispatch => {
   dispatch(deleteContactRequest());
   try {
-    await axios.delete(`/contacts/${id}.json`);
+    await axios.delete(`/contacts/${id}`);
     dispatch(deleteContactSuccess(id));
   } catch (error) {
-    dispatch(deleteContactError(error));
+    dispatch(deleteContactError(error.message));
   }
 };
-
-// axios.defaults.baseURL = 'http://localhost:4040';
-
-// export const fetchContactsOperations = () => async dispatch => {
-//   dispatch(fetchContactsRequest());
-//   try {
-//     const { data } = await axios.get('/contacts');
-//     dispatch(fetchContactsSuccess(data));
-//   } catch (error) {
-//     dispatch(fetchContactsError(error));
-//   }
-// };
-// export const addContactOperations = contact => async dispatch => {
-//   dispatch(addContactRequest());
-//   try {
-//     const { data } = await axios.post('contacts', contact);
-//     dispatch(addContactSuccess(data));
-//   } catch (error) {
-//     dispatch(addContactError(error));
-//   }
-// };
-
-// export const deleteContactOperation = id => async dispatch => {
-//   dispatch(deleteContactRequest());
-//   try {
-//     await axios.delete(`/contacts/${id}`);
-//     dispatch(deleteContactSuccess(id));
-//   } catch (error) {
-//     dispatch(deleteContactError(error));
-//   }
-// };

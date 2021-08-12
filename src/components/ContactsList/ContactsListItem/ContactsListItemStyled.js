@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const ContactsListItemStyled = styled.div`
+padding-left: 30px;
+list-style:cursor;
   .btnDelete {
     padding: 2px;
     margin: 5px 10px;

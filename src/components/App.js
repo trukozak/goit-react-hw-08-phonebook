@@ -1,22 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { currentUserOperation } from '../redux/auth/authOperations';
+import { getIsAuth } from '../redux/auth/authSelector';
+import Header from './Header/Header';
+import Main from './Main/Main';
 
-import AdvForm from './Admin/AdvForm';
-import ContactsList from './ContactsList/ContactsList';
-import Filter from './Filter/Filter';
-import Section from './Section/Section';
+class App extends Component {
+  componentDidUpdate(prevProps) {
+    if (this.props.idToken) {
+      if (prevProps.idToken !== this.props.idToken) {
+        this.props.currentUserOperation();
+      }
+    }
+  }
 
-const App = () => {
-  return (
-    <>
-      <Section title="Phonebook">
-        <AdvForm />
-      </Section>
-      <Section title="Contacts">
-        <Filter />
-        <ContactsList />
-      </Section>
-    </>
-  );
-};
+  render() {
+    return (
+      <>
+        <Header />
+        <Main />
+      </>
+    );
+  }
+}
 
-export default App;
+const mapStateToProps = state => ({
+  idToken: getIsAuth(state),
+});
+
+export default connect(mapStateToProps, { currentUserOperation })(App);

@@ -5,12 +5,16 @@ import {
   getContactsFiltered,
   getLoadings,
 } from '../../redux/contacts/contactsSelector';
+import { AppLoader } from '../Loader/Loader';
 
 const ContactsList = ({ contacts, loading }) => {
   return (
     <>
       {loading ? (
-        <h2>Loading Contacts...</h2>
+        <>
+          <AppLoader />
+          <h2>Loading Contacts...</h2>
+        </>
       ) : (
         <ul>
           {contacts.map(contact => (
