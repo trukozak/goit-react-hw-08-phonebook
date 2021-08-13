@@ -10,7 +10,7 @@ const UserMenu = ({ username, logOutOperation }) => {
       <p className="text">
         Welcome, <span className="">{username}</span>
       </p>
-      <button className="" type="button" onClick={logOutOperation}>
+      <button className="" type="button" onClick={()=>logOutOperation()}>
         Logout
       </button>
     </UserMenuStyled>

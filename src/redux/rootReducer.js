@@ -3,6 +3,7 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import contactsReducer from './contacts/contactsReducer';
 import authReducer from './auth/authReducer';
+import { error } from './error/errorReducer';
 
 const persistConfig = {
   key: 'root',
@@ -13,5 +14,6 @@ const persistConfig = {
 const rootReducer = combineReducers({
   items: contactsReducer,
   auth: persistReducer(persistConfig, authReducer),
+  error,
 });
 export default rootReducer;

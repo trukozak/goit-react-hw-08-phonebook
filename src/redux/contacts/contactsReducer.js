@@ -1,4 +1,5 @@
 import { combineReducers, createReducer } from '@reduxjs/toolkit';
+import { logOutSuccess } from '../auth/authActions';
 import {
   addContactError,
   addContactRequest,
@@ -17,16 +18,9 @@ const contactsItemReducer = createReducer([], {
   [addContactSuccess]: (state, { payload }) => [...state, payload],
   [deleteContactSuccess]: (state, { payload }) =>
     state.filter(({ id }) => id !== payload),
+  [logOutSuccess]: () => [],
 });
 
-const error = createReducer('', {
-  [fetchContactsRequest]: () => '',
-  [fetchContactsError]: (_, { payload }) => payload,
-  [addContactRequest]: () => '',
-  [addContactError]: (_, { payload }) => payload,
-  [deleteContactRequest]: () => '',
-  [deleteContactError]: (_, { payload }) => payload,
-});
 const loading = createReducer(false, {
   [fetchContactsRequest]: () => true,
   [fetchContactsSuccess]: () => false,
@@ -47,7 +41,6 @@ const contactsReducer = combineReducers({
   contacts: contactsItemReducer,
   filter: filterReducer,
   loading,
-  error,
 });
 
 export default contactsReducer;
